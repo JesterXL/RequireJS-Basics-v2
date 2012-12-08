@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Require JS Basic Example 2</title>
+    
+    
+    <script src="js/libs/log4javascript/log4javascript_uncompressed.js"></script>
+    <script src="js/libs/require/require.js"></script>
+  </head>
+
+  <body>
+    <div id="simpleSelectah"></div>
+  </body>
+
+  <script>
+
+    var logger = log4javascript.getLogger("RequireJSBasicsYoHolmes");
+    logger.setLevel(log4javascript.Level.ALL);
+    logger.addAppender(new log4javascript.BrowserConsoleAppender());
+    window.logger = logger;
+    logger.debug("debug: index.html::log4javascript ready to rock.");
+
+    require.config({
+    baseUrl: "./js",
+    waitSeconds: 10,
+    paths:
+    {
+      hbs: "./libs/handlebars/hbs"
+    },
+    hbs : {
+          templateExtension : 'hbs',
+          disableI18n : false
+      },
+    packages: [
+      {
+        name: "jquery",
+        location: "./libs/jquery",
+        main: "jquery"
+      },
+      {
+        name: "json2",
+        location: "./libs/json2",
+        main: "json2"
+      },
+      {
+        name: "underscore",
+        location: "./libs/underscore",
+        main: "underscore"
+      },
+      {
+        name: "backbone",
+        location: "./libs/backbone",
+        main: "backbone"
+      }
+    ]
+  });
+
+    /*
+    require(["com/jessewarden/requirebasicsv2/vo/PersonVO"], function(PersonVO)
+    {
+      //logger.debug(PersonVO);
+      var test = new PersonVO("Jesse", "Warden");
+      logger.debug("test:", test);
+    });
+  */
+
+    require(["com/jessewarden/requirebasicsv2/views/PersonList",
+             "com/jessewarden/requirebasicsv2/vo/PersonVO"], function(PersonList, PersonVO)
+    {
+      var view = PersonList();
+      var personArray = [];
+      personArray.push(new PersonVO("Jesse", "Warden"));
+      personArray.push(new PersonVO("Brandy", "Fortune"));
+      personArray.push(new PersonVO("Tobi", "Won Konobi"));
+      personArray.push(new PersonVO("Wade", "Wilson"));
+      view.personArray = personArray;
+      view.setElement("#simpleSelectah")
+      view.render();
+
+    });
+
+
+
+  </script>
+
+</html>
